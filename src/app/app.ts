@@ -23,18 +23,20 @@ interface Particle {
 })
 export class App implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('petalCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('audioPlayer') audioRef!: ElementRef<HTMLAudioElement>;
 
   days    = signal(0);
   hours   = signal(0);
   minutes = signal(0);
   seconds = signal(0);
+  musicPlaying = signal(false);
 
-  readonly weddingDate = new Date('2026-09-20T16:00:00');
-  readonly groomName   = 'Alexander';
-  readonly brideName   = 'Isabelle';
-  readonly venue       = 'Château de Fontainebleau';
-  readonly venueCity   = 'Paris, France';
-  readonly weddingDateStr = 'Juillet 23, 2026';
+  readonly weddingDate = new Date('2026-07-23T16:00:00');
+  readonly groomName   = 'بهاء';
+  readonly brideName   = 'أيّة';
+  readonly venue       = 'شاتو دو فونتانبلو';
+  readonly venueCity   = 'القيروان، تونس';
+  readonly weddingDateStr = 'الأحد، 23 جويلية 2026';
 
   activeNav = signal('home');
   rsvpSubmitted = signal(false);
@@ -47,6 +49,7 @@ export class App implements OnInit, OnDestroy, AfterViewInit {
   private animFrameId: number | null = null;
   private petals: Petal[] = [];
   private particles: Particle[] = [];
+  private hasScrollStarted = false;
 
   constructor(@Inject(PLATFORM_ID) private platformId: object) {}
 
@@ -57,6 +60,7 @@ export class App implements OnInit, OnDestroy, AfterViewInit {
       this.initCanvas();
       this.initParallax();
       this.initScrollReveal();
+      this.initMusic();
     }
   }
 
@@ -215,6 +219,30 @@ export class App implements OnInit, OnDestroy, AfterViewInit {
       });
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  }
+
+  private initMusic() {
+    window.addEventListener('scroll', () => {
+      if (!this.hasScrollStarted) {
+        this.hasScrollStarted = true;
+        const audio = this.audioRef?.nativeElement;
+        if (audio) {
+          audio.volume = 0.5;
+          audio.play().then(() => this.musicPlaying.set(true)).catch(() => {});
+        }
+      }
+    }, { once: true });
+  }
+
+  toggleMusic() {
+    const audio = this.audioRef?.nativeElement;
+    if (!audio) return;
+    if (audio.paused) {
+      audio.play().then(() => this.musicPlaying.set(true)).catch(() => {});
+    } else {
+      audio.pause();
+      this.musicPlaying.set(false);
+    }
   }
 
   submitRsvp() {
