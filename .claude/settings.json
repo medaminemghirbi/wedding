@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "Bash(chromium-cli screenshot *)",
+      "Bash(chromium --headless --disable-gpu --screenshot=/tmp/invite-screenshot.png --window-size=430,900 http://localhost:4201)"
+    ]
+  }
+}
