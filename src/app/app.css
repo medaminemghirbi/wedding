@@ -1,3 +1,232 @@
+/* ─── ENVELOPE OVERLAY ──────────────────────────────────── */
+.envelope-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: radial-gradient(ellipse at 50% 42%, #FEF9EC 0%, #F7EDCE 55%, #EEDC9E 100%);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 40px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+}
+
+/* Soft ambient orbs in the background */
+.env-bg-orb {
+  position: absolute; border-radius: 50%;
+  pointer-events: none;
+  animation: pulse-glow 6s ease-in-out infinite;
+  filter: blur(70px);
+}
+.env-bg-orb-1 {
+  width: 700px; height: 700px;
+  top: -280px; left: -200px;
+  background: radial-gradient(circle, rgba(255,255,255,0.72) 0%, transparent 65%);
+}
+.env-bg-orb-2 {
+  width: 550px; height: 550px;
+  bottom: -200px; right: -120px;
+  background: radial-gradient(circle, rgba(201,169,110,0.2) 0%, transparent 65%);
+  animation-delay: 3s;
+}
+
+/* ── Scene container ── */
+.env-scene {
+  position: relative;
+  width: min(480px, 90vw);
+  filter: drop-shadow(0 32px 90px rgba(110,80,30,0.26));
+}
+
+/* ── Envelope body (the pocket) ── */
+.env-body {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  background: linear-gradient(168deg, #FAF3E0 0%, #F0E3C5 55%, #E5D09E 100%);
+  border: 1px solid rgba(201,169,110,0.52);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.55),
+    inset 0 -2px 8px rgba(130,100,40,0.08);
+}
+
+.env-body-folds {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+}
+
+/* ── Letter card tucked inside ── */
+.env-letter {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 82%;
+  background: linear-gradient(165deg, #FFFEF9 0%, #FBF7EE 100%);
+  border: 1px solid rgba(201,169,110,0.32);
+  padding: 16px 20px;
+  text-align: center;
+  z-index: 1;
+  box-shadow:
+    0 2px 12px rgba(120,90,40,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+}
+.env-letter::before {
+  content: '';
+  position: absolute; inset: 5px;
+  border: 0.5px solid rgba(201,169,110,0.18);
+  pointer-events: none;
+}
+.env-letter-inner {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+}
+.env-letter-band { width: 100%; max-width: 260px; }
+.env-letter-bismillah {
+  font-family: 'Scheherazade New', 'Amiri', serif;
+  font-size: 0.76rem; color: #8A6A30;
+  margin: 0; line-height: 1.8; direction: rtl;
+}
+.env-letter-couple {
+  font-family: 'Amiri', serif;
+  font-size: 1.45rem; font-weight: 700;
+  color: #1A1515; margin: 2px 0; direction: rtl;
+  text-shadow: 0 1px 8px rgba(201,169,110,0.18);
+}
+.env-letter-date {
+  font-family: 'Cormorant Garamond', 'Amiri', serif;
+  font-size: 0.7rem; color: #9A8060;
+  letter-spacing: 0.1em; margin: 0; direction: rtl;
+}
+
+/* ── Top flap (triangle pointing down ▽) ── */
+.env-flap-wrap {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 172px;          /* ~61% of body height */
+  z-index: 3;
+  perspective: 1100px;
+  perspective-origin: 50% 0%;  /* vanishing point at the fold line (top) */
+}
+.env-flap {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(170deg, #F0E4C4 0%, #E4D18C 55%, #D7BE6A 100%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: 50% 0%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: inset 0 2px 0 rgba(255,255,255,0.45);
+  border-top: 1px solid rgba(201,169,110,0.55);
+}
+
+/* ── Wax seal at fold line ── */
+.env-seal-pos {
+  position: absolute;
+  top: 172px;       /* = flap height, exactly at the fold line */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+.env-seal { position: relative; }
+.env-seal-glow {
+  position: absolute; inset: -22px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,169,110,0.38) 0%, transparent 68%);
+  animation: seal-breathe 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes seal-breathe {
+  0%, 100% { transform: scale(1);    opacity: 0.55; }
+  50%       { transform: scale(1.22); opacity: 1;    }
+}
+.env-seal-body {
+  width: 108px; height: 108px;
+  border-radius: 52% 48% 51% 49% / 50% 52% 48% 51%;
+  background: radial-gradient(circle at 38% 32%,
+    #F8EA70 0%, #DEB040 18%, #C89438 40%,
+    #A87028 62%, #885018 82%, #5C360C 100%);
+  box-shadow:
+    0 6px 28px rgba(120,82,22,0.58),
+    0 2px 6px  rgba(0,0,0,0.16),
+    inset 0 4px 16px rgba(255,244,160,0.40),
+    inset 0 -4px 12px rgba(0,0,0,0.28);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.env-seal-body::before {
+  content: '';
+  position: absolute; top: 10%; left: 14%;
+  width: 42%; height: 30%;
+  background: radial-gradient(ellipse, rgba(255,250,180,0.52) 0%, transparent 72%);
+  border-radius: 50%; transform: rotate(-35deg);
+}
+.env-seal-ring { position: absolute; border-radius: 50%; }
+.env-seal-ring-1 { inset: 9px;  border: 1.5px solid rgba(255,242,175,0.38); }
+.env-seal-ring-2 { inset: 16px; border: 1px   solid rgba(255,242,175,0.22); }
+.env-seal-text {
+  font-family: 'Scheherazade New', 'Amiri Quran', 'Amiri', serif;
+  font-size: 0.58rem; font-weight: 700;
+  color: rgba(255,250,215,0.96);
+  text-align: center; line-height: 1.7;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.45);
+  position: relative; z-index: 1;
+  padding: 0 10px; direction: rtl;
+}
+
+/* ── Hint ── */
+.env-hint {
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'Amiri', serif;
+  font-size: 0.95rem; color: #9A8060;
+  opacity: 0.72;
+  animation: hint-float 2.2s ease-in-out infinite;
+}
+@keyframes hint-float {
+  0%, 100% { transform: translateY(0);    opacity: 0.55; }
+  50%       { transform: translateY(-6px); opacity: 0.85; }
+}
+
+/* ─── OPENING SEQUENCE ──────────────────────────── */
+
+/* 1 — Seal pops at t=0 */
+.opening .env-seal {
+  animation: seal-pop 0.38s cubic-bezier(0.4,0,0.6,1) 0s both;
+}
+@keyframes seal-pop {
+  0%   { transform: scale(1);    opacity: 1; }
+  35%  { transform: scale(1.18); opacity: 1; }
+  100% { transform: scale(0.3);  opacity: 0; }
+}
+
+/* 2 — Flap folds backward at t=0.2s */
+.opening .env-flap {
+  animation: flap-open 0.85s cubic-bezier(0.4,0,0.2,1) 0.2s both;
+}
+@keyframes flap-open {
+  0%   { transform: rotateX(0deg);    }
+  100% { transform: rotateX(-180deg); }
+}
+
+/* 3 — Letter rises out at t=0.65s */
+.opening .env-letter {
+  animation: letter-rise 1.05s cubic-bezier(0.16,1,0.3,1) 0.65s both;
+  z-index: 5;
+}
+@keyframes letter-rise {
+  0%   { transform: translateX(-50%) translateY(0);     opacity: 0.85; }
+  100% { transform: translateX(-50%) translateY(-152%); opacity: 1;    }
+}
+
+/* 4 — Whole overlay fades at t=1.2s */
+.opening.envelope-overlay {
+  animation: overlay-dissolve 0.65s ease 1.2s both;
+}
+@keyframes overlay-dissolve {
+  0%   { opacity: 1; }
+  100% { opacity: 0; pointer-events: none; }
+}
+
+
 /* ─── FONTS & BASE ─────────────────────────────────────── */
 :host {
   display: block;
@@ -101,25 +330,51 @@
 }
 
 /* Scroll reveal */
-.reveal { opacity: 0; transform: translateY(35px); transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1); }
-.reveal.revealed { opacity: 1; transform: translateY(0); }
+.reveal {
+  opacity: 0;
+  transform: scale(0.98);
+  filter: blur(2px);
+  transition: opacity 0.85s cubic-bezier(0.16,1,0.3,1),
+              transform 0.85s cubic-bezier(0.16,1,0.3,1),
+              filter 0.85s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.revealed { opacity: 1; transform: scale(1); filter: blur(0); }
+
+/* Hero content — staggered entrance */
+.hero .hero-pre-label.reveal        { transition-delay: 0.1s; }
+.hero .monogram-ring.reveal         { transition-delay: 0.35s; }
+.hero .couple-names.reveal          { transition-delay: 0.7s; }
+.hero .divider-ornament.reveal      { transition-delay: 1.0s; }
+.hero .wedding-date-hero.reveal     { transition-delay: 1.2s; }
+.hero .wedding-venue-hero.reveal    { transition-delay: 1.4s; }
+.hero .wedding-city-hero.reveal     { transition-delay: 1.6s; }
+.hero .inline-pearl-garland.reveal  { transition-delay: 1.8s; }
+.hero .scroll-cue.reveal            { transition-delay: 2.2s; }
 
 /* ─── NAV ────────────────────────────────────────────────── */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: center;
-  padding: 20px 60px;
+  padding: 36px 60px;
   background: rgba(253,248,238,0.88);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(201,169,110,0.14);
   transition: all 0.4s ease;
 }
 .nav-monogram {
-  font-family: 'Amiri', serif;
-  font-size: 2rem;
-  color: #1A1515;
-  letter-spacing: 4px;
-  opacity: 0.88;
+  font-family: 'Scheherazade New', 'Amiri Quran', 'Amiri', serif;
+  font-size: clamp(1.5rem, 4vw, 2.1rem);
+  font-weight: 700;
+  color: #B8892A;
+  letter-spacing: 0;
+  line-height: 1.6;
+  text-shadow:
+    0 1px 4px rgba(201,169,110,0.35),
+    0 0 18px rgba(201,169,110,0.15);
+  background: linear-gradient(135deg, #C9A96E 0%, #E8C97A 45%, #B8892A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* ─── SPARKLE FIELD ──────────────────────────────────────── */
@@ -509,6 +764,85 @@
   line-height: 120px; margin: 0 4px;
 }
 
+/* ─── INVITE-CARD COUNTDOWN ─────────────────────────────── */
+.ic-countdown {
+  width: 100%;
+  text-align: center;
+  margin: 12px 0 18px;
+}
+
+.ic-cd-date {
+  font-family: 'Amiri', serif;
+  font-size: 0.92rem;
+  color: #9A8060;
+  letter-spacing: 0.06em;
+  margin-bottom: 22px;
+  direction: rtl;
+}
+
+.ic-cd-grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  direction: ltr;
+  flex-wrap: nowrap;
+}
+
+.ic-cd-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.ic-cd-box {
+  width: clamp(60px, 15vw, 76px);
+  height: clamp(60px, 15vw, 76px);
+  border: 1px solid rgba(201,169,110,0.40);
+  border-radius: 10px;
+  background: rgba(201,169,110,0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.ic-cd-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.45) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.ic-cd-num {
+  font-family: 'Cormorant Garamond', 'Amiri', serif;
+  font-size: clamp(1.5rem, 4.5vw, 2rem);
+  font-weight: 500;
+  color: #3A3028;
+  position: relative;
+  z-index: 1;
+  line-height: 1;
+}
+
+.ic-cd-label {
+  font-family: 'Amiri', serif;
+  font-size: 0.72rem;
+  color: rgba(154,128,96,0.85);
+  direction: rtl;
+}
+
+.ic-cd-colon {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  color: rgba(201,169,110,0.65);
+  line-height: 1;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
 /* ─── FOOTER ─────────────────────────────────────────────── */
 .footer {
   padding: 80px 40px 60px;
@@ -581,11 +915,105 @@
   color: #B09A80; margin-top: 10px;
 }
 
+/* ─── CARD-OPEN KEYFRAMES ────────────────────────────── */
+@keyframes card-open {
+  from {
+    opacity: 0;
+    transform: perspective(1200px) rotateX(-12deg) scale(0.97);
+    filter: blur(5px);
+    transform-origin: top center;
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1200px) rotateX(0deg) scale(1);
+    filter: blur(0);
+  }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); filter: blur(2px); }
+  to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
+}
+@keyframes scale-stamp {
+  from { opacity: 0; transform: scale(0.65); filter: blur(6px); }
+  55%  { transform: scale(1.05); opacity: 1; filter: blur(0); }
+  to   { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+@keyframes slide-rtl {
+  from { opacity: 0; transform: translateX(36px); filter: blur(2px); }
+  to   { opacity: 1; transform: translateX(0);    filter: blur(0); }
+}
+@keyframes ornament-draw {
+  from { opacity: 0; transform: scale(0.6) rotate(15deg); }
+  to   { opacity: 1; transform: scale(1)   rotate(0deg); }
+}
+
+/* Card-open reveal variant */
+.reveal.reveal-card {
+  opacity: 0;
+  transform: perspective(1200px) rotateX(-12deg) scale(0.97);
+  filter: blur(5px);
+  transform-origin: top center;
+  transition: none;
+}
+.reveal.reveal-card.revealed {
+  animation: card-open 1.4s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+/* All children invisible until the card animates */
+.reveal-card .ic-corner,
+.reveal-card .ib-top,
+.reveal-card .ib-bottom,
+.reveal-card .invite-bismillah,
+.reveal-card .invite-names-row,
+.reveal-card .id-top,
+.reveal-card .id-bot,
+.reveal-card .ic-countdown,
+.reveal-card .invite-venue,
+.reveal-card .invite-closing,
+.reveal-card .invite-subclosing {
+  opacity: 0;
+}
+
+/* Staggered child animations once the card is revealed */
+.reveal-card.revealed .ic-corner {
+  animation: ornament-draw 0.7s cubic-bezier(0.16,1,0.3,1) 0.2s both;
+}
+.reveal-card.revealed .ib-top {
+  animation: fade-up 0.6s ease 0.4s both;
+}
+.reveal-card.revealed .invite-bismillah {
+  animation: fade-up 0.8s cubic-bezier(0.16,1,0.3,1) 0.65s both;
+}
+.reveal-card.revealed .invite-names-row {
+  animation: scale-stamp 1s cubic-bezier(0.16,1,0.3,1) 0.9s both;
+}
+.reveal-card.revealed .id-top {
+  animation: fade-up 0.6s ease 1.2s both;
+}
+.reveal-card.revealed .ic-countdown {
+  animation: fade-up 0.9s cubic-bezier(0.16,1,0.3,1) 1.35s both;
+}
+.reveal-card.revealed .id-bot {
+  animation: fade-up 0.6s ease 1.75s both;
+}
+.reveal-card.revealed .invite-venue {
+  animation: fade-up 0.8s cubic-bezier(0.16,1,0.3,1) 1.9s both;
+}
+.reveal-card.revealed .invite-closing {
+  animation: fade-up 0.8s cubic-bezier(0.16,1,0.3,1) 2.1s both;
+}
+.reveal-card.revealed .invite-subclosing {
+  animation: fade-up 0.8s cubic-bezier(0.16,1,0.3,1) 2.3s both;
+}
+.reveal-card.revealed .ib-bottom {
+  animation: fade-up 0.6s ease 2.45s both;
+}
+
 /* ─── INVITE SECTION ─────────────────────────────────── */
 .invite-section {
   position: relative;
   padding: 100px 20px;
-  background: linear-gradient(168deg, #F5EDD5 0%, #EDE0C2 45%, #E5D3B0 100%);
+  background: linear-gradient(168deg, #FAD6DA 0%, #F5C3CA 45%, #EEBAC2 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -605,13 +1033,13 @@
   position: relative;
   z-index: 2;
   width: min(620px, 90vw);
-  background: linear-gradient(165deg, #FFFEF9 0%, #FBF6EE 50%, #F6EDE0 100%);
-  border: 1px solid rgba(201,169,110,0.5);
+  background: linear-gradient(165deg, #FFFFFF 0%, #FEFCF8 50%, #FCF9F3 100%);
+  border: 1px solid rgba(196,164,124,0.38);
   padding: 64px 56px 54px;
   box-shadow:
-    0 6px 50px rgba(130,100,50,0.14),
-    0 2px 100px rgba(130,100,50,0.06),
-    inset 0 0 80px rgba(201,169,110,0.04);
+    0 8px 60px rgba(180,110,120,0.18),
+    0 2px 100px rgba(180,110,120,0.08),
+    inset 0 0 80px rgba(255,220,225,0.06);
 }
 
 .invite-card::before {
@@ -657,6 +1085,44 @@
   line-height: 1.9;
   opacity: 0.82;
   margin: 0;
+}
+
+.invite-text {
+  width: 100%;
+  text-align: center;
+  margin: 6px 0 10px;
+}
+
+.invite-families-title {
+  font-family: 'Amiri', serif;
+  font-size: 1rem;
+  color: #3A3028;
+  opacity: 0.75;
+  margin: 0 0 10px;
+}
+
+.invite-parents-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 6px 0;
+  direction: rtl;
+}
+
+.invite-parent-name {
+  font-family: 'Amiri', serif;
+  font-size: clamp(0.95rem, 2.8vw, 1.15rem);
+  color: #3A3028;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.invite-parent-sep {
+  font-family: 'Amiri', serif;
+  font-size: 1rem;
+  color: #C9A96E;
+  flex-shrink: 0;
 }
 
 .invite-names-row {
@@ -752,6 +1218,25 @@
   margin-top: -10px;
 }
 
+/* ─── CARD ARCH FRAME ────────────────────────────────── */
+.card-arch-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.card-arch-svg {
+  width: 100%;
+  height: auto;
+}
+
+/* Reduce corner ornament prominence — arch is the dominant decor */
+.invite-card .ic-corner {
+  opacity: 0.22;
+}
+
 /* ─── MUSIC BUTTON ───────────────────────────────────── */
 @keyframes music-pulse {
   0%, 100% { box-shadow: 0 4px 16px rgba(12,24,40,0.25), 0 0 10px rgba(201,169,110,0.06); }
@@ -818,4 +1303,213 @@
   .invite-event { padding: 10px 8px; }
   .ic-corner { width: 70px; height: 70px; }
   .music-btn { bottom: 20px; left: 20px; padding: 8px 14px; }
+}
+
+/* ─── LANG TOGGLE ────────────────────────────────────────── */
+.lang-toggle {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 2px;
+  background: rgba(201,169,110,0.12);
+  border-radius: 20px;
+  padding: 3px;
+}
+
+.lang-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 4px 13px;
+  border-radius: 16px;
+  font-family: 'Cormorant Garamond', 'Tajawal', serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #B8892A;
+  transition: background 0.2s, color 0.2s;
+}
+
+.lang-btn.active {
+  background: #C9A96E;
+  color: #fff;
+}
+
+.lang-btn:not(.active):hover {
+  background: rgba(201,169,110,0.18);
+}
+
+/* ─── FRENCH FONT OVERRIDES ──────────────────────────────── */
+.invite-card.is-fr .invite-families-title,
+.invite-card.is-fr .invite-opener,
+.invite-card.is-fr .ie-title,
+.invite-card.is-fr .ie-datetime,
+.invite-card.is-fr .invite-closing,
+.invite-card.is-fr .invite-subclosing,
+.invite-card.is-fr .iv-name,
+.invite-card.is-fr .iv-city,
+.is-fr .music-btn-label {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.invite-card.is-fr .invite-families-title {
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+.invite-card.is-fr .invite-parents-row {
+  direction: ltr;
+  text-align: center;
+}
+
+.invite-card.is-fr .invite-event {
+  direction: ltr;
+}
+
+
+/* ─── SCRATCH DATE SECTION ─────────────────────────────── */
+.scratch-section {
+  position: relative;
+  padding: 80px 20px 90px;
+  background: linear-gradient(168deg, #FEFBF5 0%, #FAF4E8 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  overflow: hidden;
+}
+
+/* Subtle zellige pattern */
+.scratch-section::before {
+  content: '';
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(60deg, rgba(201,169,110,0.035) 25%, transparent 25.5%, transparent 75%, rgba(201,169,110,0.035) 75.5%),
+    linear-gradient(-60deg, rgba(201,169,110,0.035) 25%, transparent 25.5%, transparent 75%, rgba(201,169,110,0.035) 75.5%);
+  background-size: 52px 90px;
+}
+
+.scratch-section > * { position: relative; z-index: 1; }
+
+/* Script title */
+.scratch-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(3rem, 9vw, 4.6rem);
+  font-weight: 400;
+  color: #1A1515;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+/* "✦ Scratch to reveal ✦" row */
+.scratch-subtitle-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  color: #8A7A68;
+  font-style: italic;
+  margin-top: -4px;
+}
+.scratch-dec {
+  font-style: normal;
+  font-size: 0.6rem;
+  color: #C9A96E;
+  opacity: 0.85;
+}
+
+/* Cards row */
+.scratch-cards {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.scratch-card-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* The card itself — white, rounded, no border */
+.scratch-card {
+  position: relative;
+  width: 96px;
+  height: 110px;
+  background: #FFFFFF;
+  border-radius: 14px;
+  box-shadow:
+    0 2px 12px rgba(0,0,0,0.07),
+    0 6px 28px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: crosshair;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.scratch-card-wide {
+  width: 148px;
+}
+
+/* Date text revealed underneath */
+.scratch-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.6rem;
+  font-weight: 400;
+  color: #1A1515;
+  position: relative;
+  z-index: 0;
+  user-select: none;
+  pointer-events: none;
+  letter-spacing: 0.02em;
+}
+.scratch-value-md {
+  font-size: 1.55rem;
+  letter-spacing: 0.02em;
+}
+.scratch-value-sm {
+  font-size: 2rem;
+}
+
+/* The canvas scratch overlay */
+.scratch-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  touch-action: none;
+  cursor: crosshair;
+  border-radius: 14px;
+}
+
+/* Label below each card */
+.scratch-card-label {
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  color: #ADA090;
+  text-transform: uppercase;
+}
+
+@media (max-width: 480px) {
+  .scratch-card       { width: 82px; height: 96px; }
+  .scratch-card-wide  { width: 126px; }
+  .scratch-value      { font-size: 2.2rem; }
+  .scratch-value-md   { font-size: 1.3rem; }
+  .scratch-value-sm   { font-size: 1.7rem; }
+  .scratch-cards      { gap: 10px; }
 }

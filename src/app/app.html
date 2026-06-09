@@ -1,344 +1,137 @@
+<!-- ─── ENVELOPE OVERLAY ───────────────────────────────── -->
+@if (!envelopeGone()) {
+  <div class="envelope-overlay" [class.opening]="envelopeOpened()" (click)="openEnvelope()">
+
+    <!-- Ambient background glows -->
+    <div class="env-bg-orb env-bg-orb-1"></div>
+    <div class="env-bg-orb env-bg-orb-2"></div>
+
+    <div class="env-scene">
+
+      <!-- Envelope body / pocket -->
+      <div class="env-body">
+
+        <!-- Fold-line diagonals (cosmetic) -->
+        <svg class="env-body-folds" viewBox="0 0 480 280" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0"   y1="280" x2="240" y2="140" stroke="#C9A96E" stroke-width="0.9" opacity="0.18"/>
+          <line x1="480" y1="280" x2="240" y2="140" stroke="#C9A96E" stroke-width="0.9" opacity="0.18"/>
+          <line x1="0"   y1="0"   x2="240" y2="140" stroke="#C9A96E" stroke-width="0.9" opacity="0.09"/>
+          <line x1="480" y1="0"   x2="240" y2="140" stroke="#C9A96E" stroke-width="0.9" opacity="0.09"/>
+        </svg>
+
+        <!-- Letter card that peeks inside + rises when opened -->
+        <div class="env-letter">
+          <div class="env-letter-inner">
+            <svg class="env-letter-band" viewBox="0 0 260 14" xmlns="http://www.w3.org/2000/svg">
+              <line x1="0" y1="7" x2="100" y2="7" stroke="#C9A96E" stroke-width="0.6" opacity="0.35"/>
+              <circle cx="108" cy="7" r="1.8" fill="#C9A96E" opacity="0.4"/>
+              <g transform="translate(130,7)" opacity="0.5">
+                <polygon points="0,-4.5 1.1,-1.1 4.5,0 1.1,1.1 0,4.5 -1.1,1.1 -4.5,0 -1.1,-1.1" fill="#C9A96E"/>
+              </g>
+              <circle cx="152" cy="7" r="1.8" fill="#C9A96E" opacity="0.4"/>
+              <line x1="160" y1="7" x2="260" y2="7" stroke="#C9A96E" stroke-width="0.6" opacity="0.35"/>
+            </svg>
+            <p class="env-letter-bismillah">بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيم</p>
+            <p class="env-letter-couple">Baha &amp; Eya</p>
+            <p class="env-letter-date">٢٣ يوليو ٢٠٢٦</p>
+            <svg class="env-letter-band" viewBox="0 0 260 14" xmlns="http://www.w3.org/2000/svg">
+              <line x1="0" y1="7" x2="100" y2="7" stroke="#C9A96E" stroke-width="0.6" opacity="0.35"/>
+              <circle cx="108" cy="7" r="1.8" fill="#C9A96E" opacity="0.4"/>
+              <g transform="translate(130,7)" opacity="0.5">
+                <polygon points="0,-4.5 1.1,-1.1 4.5,0 1.1,1.1 0,4.5 -1.1,1.1 -4.5,0 -1.1,-1.1" fill="#C9A96E"/>
+              </g>
+              <circle cx="152" cy="7" r="1.8" fill="#C9A96E" opacity="0.4"/>
+              <line x1="160" y1="7" x2="260" y2="7" stroke="#C9A96E" stroke-width="0.6" opacity="0.35"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Top flap: triangle pointing down, rotates back when opened -->
+        <div class="env-flap-wrap">
+          <div class="env-flap"></div>
+        </div>
+
+        <!-- Wax seal at the fold line (pops when opened) -->
+        <div class="env-seal-pos">
+          <div class="env-seal">
+            <div class="env-seal-glow"></div>
+            <div class="env-seal-body">
+              <div class="env-seal-ring env-seal-ring-1"></div>
+              <div class="env-seal-ring env-seal-ring-2"></div>
+              <span class="env-seal-text">بِسْمِ اللَّـهِ<br>الرَّحْمَـٰنِ الرَّحِيم</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.env-body -->
+
+    </div><!-- /.env-scene -->
+
+    <!-- Tap hint -->
+    <div class="env-hint">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+      <span>{{ lang() === 'ar' ? 'انقر لفتح الدعوة' : 'Toucher pour ouvrir' }}</span>
+    </div>
+
+  </div>
+}
+
 <div class="site-wrapper">
 
   <!-- ─── NAV ─────────────────────────────────────────── -->
   <nav class="nav">
-    <div class="nav-monogram">بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرحيم</div>
+    <div class="nav-monogram">بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرحيم</div>
+    <!-- <div class="lang-toggle">
+      <button class="lang-btn" [class.active]="lang() === 'ar'" (click)="setLang('ar')">AR</button>
+      <button class="lang-btn" [class.active]="lang() === 'fr'" (click)="setLang('fr')">FR</button>
+    </div> -->
   </nav>
 
-  <!-- ─── HERO ─────────────────────────────────────────── -->
-  <section class="hero" id="home">
-    <canvas #petalCanvas class="petal-canvas"></canvas>
 
-    <div class="glow-orb glow-1 parallax-deep"></div>
-    <div class="glow-orb glow-2 parallax-deep"></div>
-    <div class="glow-orb glow-3 parallax-mid"></div>
+  <!-- ─── SCRATCH DATE ──────────────────────────────── -->
+  <section class="scratch-section reveal" id="the-date">
 
-    <!-- Sparkle field -->
-    <div class="sparkle-field">
-      <span class="sp" style="top:8%;left:15%;--d:0s;--s:4px"></span>
-      <span class="sp" style="top:18%;left:42%;--d:.8s;--s:3px"></span>
-      <span class="sp" style="top:32%;left:8%;--d:1.5s;--s:5px"></span>
-      <span class="sp" style="top:12%;right:18%;--d:.4s;--s:3px"></span>
-      <span class="sp" style="top:45%;right:10%;--d:2s;--s:4px"></span>
-      <span class="sp" style="top:65%;left:20%;--d:1s;--s:3px"></span>
-      <span class="sp" style="top:75%;right:25%;--d:2.5s;--s:5px"></span>
-      <span class="sp" style="top:55%;left:48%;--d:3s;--s:3px"></span>
-      <span class="sp" style="top:28%;right:32%;--d:.2s;--s:4px"></span>
-      <span class="sp" style="top:82%;left:60%;--d:1.8s;--s:3px"></span>
-      <span class="sp" style="top:15%;left:68%;--d:3.2s;--s:5px"></span>
-      <span class="sp" style="top:70%;right:40%;--d:.6s;--s:4px"></span>
-      <span class="sp" style="top:38%;left:78%;--d:2.8s;--s:3px"></span>
-      <span class="sp" style="top:90%;left:30%;--d:1.3s;--s:4px"></span>
-      <span class="sp" style="top:5%;left:55%;--d:3.5s;--s:3px"></span>
-      <span class="sp" style="top:60%;right:55%;--d:.9s;--s:5px"></span>
+    <h2 class="scratch-title">{{ t().scratchTitle }}</h2>
+
+    <div class="scratch-subtitle-row">
+      <span class="scratch-dec">✦</span>
+      <span class="scratch-hint-text">{{ t().scratchHint }}</span>
+      <span class="scratch-dec">✦</span>
     </div>
 
-    <!-- Pearl strings (4) -->
-    <div class="pearl-string ps-left parallax-deep">
-      <div class="pearl" style="--sz:18px;--delay:0s"></div>
-      <div class="pearl-line" style="--h:60px"></div>
-      <div class="pearl" style="--sz:12px;--delay:.4s"></div>
-      <div class="pearl-line" style="--h:40px"></div>
-      <div class="pearl" style="--sz:22px;--delay:.8s"></div>
-      <div class="pearl-line" style="--h:80px"></div>
-      <div class="pearl" style="--sz:10px;--delay:1.2s"></div>
-      <div class="pearl-line" style="--h:50px"></div>
-      <div class="pearl" style="--sz:16px;--delay:1.6s"></div>
-      <div class="pearl-line" style="--h:70px"></div>
-      <div class="pearl" style="--sz:8px;--delay:2s"></div>
-    </div>
+    <div class="scratch-cards">
 
-    <div class="pearl-string ps-left2 parallax-deep">
-      <div class="pearl" style="--sz:10px;--delay:.2s"></div>
-      <div class="pearl-line" style="--h:50px"></div>
-      <div class="pearl" style="--sz:18px;--delay:.6s"></div>
-      <div class="pearl-line" style="--h:70px"></div>
-      <div class="pearl" style="--sz:8px;--delay:1s"></div>
-      <div class="pearl-line" style="--h:45px"></div>
-      <div class="pearl" style="--sz:24px;--delay:1.4s"></div>
-      <div class="pearl-line" style="--h:60px"></div>
-      <div class="pearl" style="--sz:12px;--delay:1.8s"></div>
-      <div class="pearl-line" style="--h:55px"></div>
-      <div class="pearl" style="--sz:16px;--delay:2.2s"></div>
-    </div>
-
-    <div class="pearl-string ps-right parallax-deep">
-      <div class="pearl" style="--sz:14px;--delay:.3s"></div>
-      <div class="pearl-line" style="--h:55px"></div>
-      <div class="pearl" style="--sz:20px;--delay:.7s"></div>
-      <div class="pearl-line" style="--h:65px"></div>
-      <div class="pearl" style="--sz:10px;--delay:1.1s"></div>
-      <div class="pearl-line" style="--h:45px"></div>
-      <div class="pearl" style="--sz:24px;--delay:1.5s"></div>
-      <div class="pearl-line" style="--h:75px"></div>
-      <div class="pearl" style="--sz:12px;--delay:1.9s"></div>
-      <div class="pearl-line" style="--h:50px"></div>
-      <div class="pearl" style="--sz:18px;--delay:2.3s"></div>
-    </div>
-
-    <div class="pearl-string ps-right2 parallax-deep">
-      <div class="pearl" style="--sz:20px;--delay:.5s"></div>
-      <div class="pearl-line" style="--h:65px"></div>
-      <div class="pearl" style="--sz:10px;--delay:.9s"></div>
-      <div class="pearl-line" style="--h:48px"></div>
-      <div class="pearl" style="--sz:16px;--delay:1.3s"></div>
-      <div class="pearl-line" style="--h:72px"></div>
-      <div class="pearl" style="--sz:8px;--delay:1.7s"></div>
-      <div class="pearl-line" style="--h:55px"></div>
-      <div class="pearl" style="--sz:22px;--delay:2.1s"></div>
-      <div class="pearl-line" style="--h:40px"></div>
-      <div class="pearl" style="--sz:14px;--delay:2.5s"></div>
-    </div>
-
-    <!-- Floating scattered pearls -->
-    <div class="float-pearl fp1 parallax-mid" style="--sz:30px;--delay:.5s"></div>
-    <div class="float-pearl fp2 parallax-mid" style="--sz:16px;--delay:1.2s"></div>
-    <div class="float-pearl fp3 parallax-shallow" style="--sz:24px;--delay:.8s"></div>
-    <div class="float-pearl fp4 parallax-mid" style="--sz:12px;--delay:2s"></div>
-    <div class="float-pearl fp5 parallax-deep" style="--sz:20px;--delay:1.6s"></div>
-    <div class="float-pearl fp6 parallax-shallow" style="--sz:36px;--delay:.2s"></div>
-    <div class="float-pearl fp7 parallax-mid" style="--sz:14px;--delay:3s"></div>
-    <div class="float-pearl fp8 parallax-deep" style="--sz:28px;--delay:2.5s"></div>
-    <div class="float-pearl fp9 parallax-mid" style="--sz:18px;--delay:1.1s"></div>
-    <div class="float-pearl fp10 parallax-shallow" style="--sz:22px;--delay:2.2s"></div>
-    <div class="float-pearl fp11 parallax-deep" style="--sz:10px;--delay:.7s"></div>
-    <div class="float-pearl fp12 parallax-mid" style="--sz:26px;--delay:3.5s"></div>
-
-    <!-- Arabesque arch frame -->
-    <div class="hero-arch-wrap parallax-shallow">
-      <svg viewBox="0 0 600 700" class="hero-arch-svg" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="archGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#C9A96E" stop-opacity="0.75" />
-            <stop offset="55%" stop-color="#C9A96E" stop-opacity="0.35" />
-            <stop offset="100%" stop-color="#C9A96E" stop-opacity="0.04" />
-          </linearGradient>
-          <linearGradient id="archGradInner" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#C9A96E" stop-opacity="0.5" />
-            <stop offset="60%" stop-color="#C9A96E" stop-opacity="0.2" />
-            <stop offset="100%" stop-color="#C9A96E" stop-opacity="0.02" />
-          </linearGradient>
-        </defs>
-        <!-- Outer arch: center(300,480) r=240 → top y=240 -->
-        <path d="M60,700 L60,480 A240,240 0 0,0 540,480 L540,700" fill="none" stroke="url(#archGrad)"
-          stroke-width="1.6" />
-        <!-- Inner arch: center(300,486) r=208 -->
-        <path d="M92,700 L92,486 A208,208 0 0,0 508,486 L508,700" fill="none" stroke="url(#archGradInner)"
-          stroke-width="0.9" />
-        <!-- Decorative dashed inner arch -->
-        <path d="M112,700 L112,492 A192,192 0 0,0 488,492 L488,700" fill="none" stroke="#C9A96E" stroke-width="0.5"
-          opacity="0.22" stroke-dasharray="5 10" />
-
-        <!-- Keystone crown at arch top (300, 240) -->
-        <circle cx="300" cy="240" r="20" fill="none" stroke="#C9A96E" stroke-width="0.9" opacity="0.65" />
-        <circle cx="300" cy="240" r="12" fill="none" stroke="#C9A96E" stroke-width="0.6" opacity="0.45" />
-        <circle cx="300" cy="240" r="5" fill="#C9A96E" opacity="0.5" />
-        <!-- Radiating spokes -->
-        <line x1="300" y1="218" x2="300" y2="210" stroke="#C9A96E" stroke-width="0.8" opacity="0.5" />
-        <line x1="300" y1="262" x2="300" y2="270" stroke="#C9A96E" stroke-width="0.8" opacity="0.5" />
-        <line x1="278" y1="240" x2="270" y2="240" stroke="#C9A96E" stroke-width="0.8" opacity="0.5" />
-        <line x1="322" y1="240" x2="330" y2="240" stroke="#C9A96E" stroke-width="0.8" opacity="0.5" />
-        <line x1="284" y1="224" x2="279" y2="219" stroke="#C9A96E" stroke-width="0.7" opacity="0.4" />
-        <line x1="316" y1="224" x2="321" y2="219" stroke="#C9A96E" stroke-width="0.7" opacity="0.4" />
-
-        <!-- Marquetry dots along arch at 45° & 60° from top -->
-        <!-- 45° from top left: x=300-240·sin45=300-170=130, y=480-240·cos45=480-170=310 -->
-        <circle cx="130" cy="310" r="4.5" fill="none" stroke="#C9A96E" stroke-width="0.8" opacity="0.45" />
-        <circle cx="130" cy="310" r="2" fill="#C9A96E" opacity="0.35" />
-        <!-- mirror right -->
-        <circle cx="470" cy="310" r="4.5" fill="none" stroke="#C9A96E" stroke-width="0.8" opacity="0.45" />
-        <circle cx="470" cy="310" r="2" fill="#C9A96E" opacity="0.35" />
-        <!-- 30° from top: x=300-240·sin30=300-120=180, y=480-240·cos30=480-208=272 -->
-        <circle cx="180" cy="272" r="3" fill="#C9A96E" opacity="0.3" />
-        <circle cx="420" cy="272" r="3" fill="#C9A96E" opacity="0.3" />
-
-        <!-- Column capitals -->
-        <g transform="translate(60,480)">
-          <line x1="-16" y1="0" x2="16" y2="0" stroke="#C9A96E" stroke-width="1.2" opacity="0.5" />
-          <line x1="-10" y1="-8" x2="10" y2="-8" stroke="#C9A96E" stroke-width="0.7" opacity="0.35" />
-          <circle cx="0" cy="1" r="4" fill="none" stroke="#C9A96E" stroke-width="0.8" opacity="0.4" />
-        </g>
-        <g transform="translate(540,480)">
-          <line x1="-16" y1="0" x2="16" y2="0" stroke="#C9A96E" stroke-width="1.2" opacity="0.5" />
-          <line x1="-10" y1="-8" x2="10" y2="-8" stroke="#C9A96E" stroke-width="0.7" opacity="0.35" />
-          <circle cx="0" cy="1" r="4" fill="none" stroke="#C9A96E" stroke-width="0.8" opacity="0.4" />
-        </g>
-        <!-- 8-pointed star ornament at keystone top -->
-        <g transform="translate(300,240)" opacity="0.25">
-          <polygon points="0,-8 2,-2 8,0 2,2 0,8 -2,2 -8,0 -2,-2" fill="#C9A96E" />
-          <polygon points="0,-8 2,-2 8,0 2,2 0,8 -2,2 -8,0 -2,-2" fill="#C9A96E" transform="rotate(45)" />
-        </g>
-      </svg>
-    </div>
-
-    <!-- Jasmine clusters (Tunisia's national flower) -->
-    <div class="jasmine-cluster jc-left parallax-mid">
-      <svg viewBox="0 0 180 210" class="jasmine-svg js1" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <radialGradient id="jg1" cx="38%" cy="32%" r="60%">
-            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.98" />
-            <stop offset="60%" stop-color="#F8F4ED" stop-opacity="0.88" />
-            <stop offset="100%" stop-color="#EDE5D2" stop-opacity="0.65" />
-          </radialGradient>
-          <filter id="jsh1">
-            <feDropShadow dx="1" dy="2" stdDeviation="3" flood-color="rgba(180,160,110,0.2)" />
-          </filter>
-        </defs>
-        <!-- Large jasmine at (75,80) -->
-        <g filter="url(#jsh1)" transform="translate(75,80)">
-          <ellipse cx="0" cy="-25" rx="10" ry="21" fill="url(#jg1)" transform="rotate(0)" />
-          <ellipse cx="0" cy="-25" rx="10" ry="21" fill="url(#jg1)" transform="rotate(72)" />
-          <ellipse cx="0" cy="-25" rx="10" ry="21" fill="url(#jg1)" transform="rotate(144)" />
-          <ellipse cx="0" cy="-25" rx="10" ry="21" fill="url(#jg1)" transform="rotate(216)" />
-          <ellipse cx="0" cy="-25" rx="10" ry="21" fill="url(#jg1)" transform="rotate(288)" />
-          <circle cx="0" cy="0" r="10" fill="#FFF3A0" opacity="0.92" />
-          <circle cx="-2" cy="-3" r="4" fill="rgba(255,255,255,0.75)" />
-        </g>
-        <!-- Medium jasmine at (135,55) -->
-        <g transform="translate(135,55)" opacity="0.82">
-          <ellipse cx="0" cy="-17" rx="7" ry="14" fill="url(#jg1)" transform="rotate(0)" />
-          <ellipse cx="0" cy="-17" rx="7" ry="14" fill="url(#jg1)" transform="rotate(72)" />
-          <ellipse cx="0" cy="-17" rx="7" ry="14" fill="url(#jg1)" transform="rotate(144)" />
-          <ellipse cx="0" cy="-17" rx="7" ry="14" fill="url(#jg1)" transform="rotate(216)" />
-          <ellipse cx="0" cy="-17" rx="7" ry="14" fill="url(#jg1)" transform="rotate(288)" />
-          <circle cx="0" cy="0" r="7" fill="#FFF3A0" opacity="0.88" />
-        </g>
-        <!-- Small bud at (42,148) -->
-        <g transform="translate(42,148)" opacity="0.62">
-          <ellipse cx="0" cy="-11" rx="5" ry="9" fill="url(#jg1)" transform="rotate(0)" />
-          <ellipse cx="0" cy="-11" rx="5" ry="9" fill="url(#jg1)" transform="rotate(120)" />
-          <ellipse cx="0" cy="-11" rx="5" ry="9" fill="url(#jg1)" transform="rotate(240)" />
-          <circle cx="0" cy="0" r="5" fill="#FFF3A0" opacity="0.82" />
-        </g>
-        <!-- Stems -->
-        <path d="M75,95 Q68,132 52,162" stroke="#7A9B6A" stroke-width="1.6" fill="none" opacity="0.5" />
-        <path d="M135,70 Q142,105 148,138" stroke="#7A9B6A" stroke-width="1.1" fill="none" opacity="0.4" />
-        <path d="M52,140 Q44,144 40,150" stroke="#7A9B6A" stroke-width="1" fill="none" opacity="0.4" />
-        <!-- Leaves -->
-        <ellipse cx="60" cy="150" rx="9" ry="16" fill="#7A9B6A" opacity="0.32" transform="rotate(-28,60,150)" />
-        <ellipse cx="80" cy="122" rx="7" ry="12" fill="#7A9B6A" opacity="0.26" transform="rotate(18,80,122)" />
-        <ellipse cx="141" cy="122" rx="6" ry="10" fill="#7A9B6A" opacity="0.26" transform="rotate(-12,141,122)" />
-      </svg>
-    </div>
-
-    <div class="jasmine-cluster jc-right parallax-mid">
-      <svg viewBox="0 0 180 210" class="jasmine-svg js2" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <radialGradient id="jg2" cx="38%" cy="32%" r="60%">
-            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.98" />
-            <stop offset="60%" stop-color="#F8F4ED" stop-opacity="0.88" />
-            <stop offset="100%" stop-color="#EDE5D2" stop-opacity="0.65" />
-          </radialGradient>
-          <filter id="jsh2">
-            <feDropShadow dx="-1" dy="2" stdDeviation="3" flood-color="rgba(180,160,110,0.2)" />
-          </filter>
-        </defs>
-        <g filter="url(#jsh2)" transform="translate(105,75)">
-          <ellipse cx="0" cy="-25" rx="10" ry="21" fill="url(#jg2)" transform="rotate(0)" />
-          <ellipse cx="0" cy="-25" rx="10" ry="21" fill="url(#jg2)" transform="rotate(72)" />
-          <ellipse cx="0" cy="-25" rx="10" ry="21" fill="url(#jg2)" transform="rotate(144)" />
-          <ellipse cx="0" cy="-25" rx="10" ry="21" fill="url(#jg2)" transform="rotate(216)" />
-          <ellipse cx="0" cy="-25" rx="10" ry="21" fill="url(#jg2)" transform="rotate(288)" />
-          <circle cx="0" cy="0" r="10" fill="#FFF3A0" opacity="0.92" />
-          <circle cx="2" cy="-3" r="4" fill="rgba(255,255,255,0.75)" />
-        </g>
-        <g transform="translate(40,52)" opacity="0.82">
-          <ellipse cx="0" cy="-17" rx="7" ry="14" fill="url(#jg2)" transform="rotate(0)" />
-          <ellipse cx="0" cy="-17" rx="7" ry="14" fill="url(#jg2)" transform="rotate(72)" />
-          <ellipse cx="0" cy="-17" rx="7" ry="14" fill="url(#jg2)" transform="rotate(144)" />
-          <ellipse cx="0" cy="-17" rx="7" ry="14" fill="url(#jg2)" transform="rotate(216)" />
-          <ellipse cx="0" cy="-17" rx="7" ry="14" fill="url(#jg2)" transform="rotate(288)" />
-          <circle cx="0" cy="0" r="7" fill="#FFF3A0" opacity="0.88" />
-        </g>
-        <g transform="translate(138,148)" opacity="0.62">
-          <ellipse cx="0" cy="-11" rx="5" ry="9" fill="url(#jg2)" transform="rotate(0)" />
-          <ellipse cx="0" cy="-11" rx="5" ry="9" fill="url(#jg2)" transform="rotate(120)" />
-          <ellipse cx="0" cy="-11" rx="5" ry="9" fill="url(#jg2)" transform="rotate(240)" />
-          <circle cx="0" cy="0" r="5" fill="#FFF3A0" opacity="0.82" />
-        </g>
-        <path d="M105,90 Q112,128 128,158" stroke="#7A9B6A" stroke-width="1.6" fill="none" opacity="0.5" />
-        <path d="M40,67 Q32,102 28,136" stroke="#7A9B6A" stroke-width="1.1" fill="none" opacity="0.4" />
-        <path d="M128,140 Q136,144 140,150" stroke="#7A9B6A" stroke-width="1" fill="none" opacity="0.4" />
-        <ellipse cx="120" cy="148" rx="9" ry="16" fill="#7A9B6A" opacity="0.32" transform="rotate(28,120,148)" />
-        <ellipse cx="100" cy="120" rx="7" ry="12" fill="#7A9B6A" opacity="0.26" transform="rotate(-18,100,120)" />
-        <ellipse cx="38" cy="120" rx="6" ry="10" fill="#7A9B6A" opacity="0.26" transform="rotate(12,38,120)" />
-      </svg>
-    </div>
-
-    <!-- Ribbon curves -->
-    <div class="ribbon-container parallax-shallow">
-      <svg class="ribbon-svg" viewBox="0 0 1400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="rgba(255,255,255,0)" />
-            <stop offset="20%" stop-color="rgba(240,232,210,0.4)" />
-            <stop offset="50%" stop-color="rgba(245,238,218,0.65)" />
-            <stop offset="80%" stop-color="rgba(240,232,210,0.4)" />
-            <stop offset="100%" stop-color="rgba(255,255,255,0)" />
-          </linearGradient>
-        </defs>
-        <path d="M0,100 C200,20 400,180 700,80 C1000,-20 1200,160 1400,100" stroke="url(#ribbonGrad)" stroke-width="3"
-          fill="none" opacity="0.7" />
-        <path d="M0,130 C250,50 450,190 700,110 C950,30 1150,170 1400,120" stroke="url(#ribbonGrad)" stroke-width="1.5"
-          fill="none" opacity="0.4" />
-      </svg>
-    </div>
-
-    <!-- Hero content -->
-    <div class="hero-content" dir="rtl">
-      <div class="hero-pre-label reveal">— دعوة عرس كريمة —</div>
-
-      <h1 class="couple-names reveal">
-        <span class="name-script">بهاء</span>
-        <span class="name-amp">&amp; </span>
-        <span class="name-script">أيّة</span>
-      </h1>
-
-      <div class="divider-ornament reveal">
-        <span class="divider-line"></span>
-        <!-- Arabic-inspired 8-pointed star divider -->
-        <svg class="divider-icon" viewBox="0 0 80 30" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5,15 Q20,5 40,15 Q60,25 75,15" stroke="#C9A96E" stroke-width="1" fill="none" opacity="0.65" />
-          <g transform="translate(40,15)">
-            <polygon points="0,-5 1.5,-1.5 5,0 1.5,1.5 0,5 -1.5,1.5 -5,0 -1.5,-1.5" fill="#C9A96E" opacity="0.7" />
-            <polygon points="0,-5 1.5,-1.5 5,0 1.5,1.5 0,5 -1.5,1.5 -5,0 -1.5,-1.5" fill="#C9A96E" opacity="0.4"
-              transform="rotate(45)" />
-          </g>
-          <circle cx="15" cy="13" r="1.5" fill="#C9A96E" opacity="0.5" />
-          <circle cx="65" cy="13" r="1.5" fill="#C9A96E" opacity="0.5" />
-        </svg>
-        <span class="divider-line"></span>
+      <div class="scratch-card-wrap">
+        <div class="scratch-card">
+          <span class="scratch-value">23</span>
+          <canvas class="scratch-canvas" #scratchDayCanvas></canvas>
+        </div>
+        <span class="scratch-card-label">{{ t().scratchDay }}</span>
       </div>
 
-      <p class="wedding-date-hero reveal">{{ weddingDateStr }}</p>
-      <p class="wedding-venue-hero reveal">{{ venue }}</p>
-      <p class="wedding-city-hero reveal">{{ venueCity }}</p>
-
-      <!-- Pearl garland -->
-      <div class="inline-pearl-garland reveal">
-        <div class="ipg-wire"></div>
-        <div class="pearl" style="--sz:6px;--delay:0s"></div>
-        <div class="ipg-wire"></div>
-        <div class="pearl" style="--sz:9px;--delay:.3s"></div>
-        <div class="ipg-wire"></div>
-        <div class="pearl" style="--sz:14px;--delay:.6s"></div>
-        <div class="ipg-wire"></div>
-        <div class="pearl" style="--sz:20px;--delay:.9s"></div>
-        <div class="ipg-wire"></div>
-        <div class="pearl" style="--sz:14px;--delay:.6s"></div>
-        <div class="ipg-wire"></div>
-        <div class="pearl" style="--sz:9px;--delay:.3s"></div>
-        <div class="ipg-wire"></div>
-        <div class="pearl" style="--sz:6px;--delay:0s"></div>
-        <div class="ipg-wire"></div>
+      <div class="scratch-card-wrap">
+        <div class="scratch-card scratch-card-wide">
+          <span class="scratch-value scratch-value-md">{{ t().scratchMonthVal }}</span>
+          <canvas class="scratch-canvas" #scratchMonthCanvas></canvas>
+        </div>
+        <span class="scratch-card-label">{{ t().scratchMonth }}</span>
       </div>
 
-      <div class="scroll-cue reveal">
-        <div class="scroll-cue-line"></div>
-        <span>اسكرول</span>
+      <div class="scratch-card-wrap">
+        <div class="scratch-card">
+          <span class="scratch-value scratch-value-sm">2026</span>
+          <canvas class="scratch-canvas" #scratchYearCanvas></canvas>
+        </div>
+        <span class="scratch-card-label">{{ t().scratchYear }}</span>
       </div>
+
     </div>
+
   </section>
+
+
 
   <!-- ─── INVITATION CARD ─────────────────────────────── -->
   <section class="invite-section" id="invitation">
@@ -350,7 +143,30 @@
     <div class="float-pearl" style="--sz:10px;--delay:3s;position:absolute;top:50%;left:3%;z-index:1"></div>
     <div class="float-pearl" style="--sz:20px;--delay:1.8s;position:absolute;top:38%;right:4%;z-index:1"></div>
 
-    <div class="invite-card reveal" dir="rtl">
+    <div class="invite-card reveal reveal-card" [attr.dir]="t().dir" [class.is-fr]="lang() === 'fr'">
+
+      <!-- Pointed arch frame -->
+      <div class="card-arch-wrap">
+        <svg class="card-arch-svg" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer arch -->
+          <path d="M 0,200 L 0,100 C 0,26 108,14 150,14 C 192,14 300,26 300,100 L 300,200"
+                fill="none" stroke="#C8A880" stroke-width="1.5" opacity="0.72"/>
+          <!-- Inner parallel arch -->
+          <path d="M 13,200 L 13,105 C 13,38 111,28 150,28 C 189,28 287,38 287,105 L 287,200"
+                fill="none" stroke="#C8A880" stroke-width="0.55" opacity="0.30"/>
+          <!-- Apex ornament -->
+          <circle cx="150" cy="14" r="5" fill="#C8A880" opacity="0.62"/>
+          <circle cx="150" cy="14" r="10.5" fill="none" stroke="#C8A880" stroke-width="0.8" opacity="0.36"/>
+          <g transform="translate(150,14) scale(0.55)" opacity="0.52">
+            <polygon points="0,-9 2.2,-2.2 9,0 2.2,2.2 0,9 -2.2,2.2 -9,0 -2.2,-2.2" fill="#C8A880"/>
+            <polygon points="0,-9 2.2,-2.2 9,0 2.2,2.2 0,9 -2.2,2.2 -9,0 -2.2,-2.2" fill="#C8A880"
+              transform="rotate(45)" opacity="0.55"/>
+          </g>
+          <!-- Springing-point dots -->
+          <circle cx="0"   cy="100" r="3" fill="#C8A880" opacity="0.42"/>
+          <circle cx="300" cy="100" r="3" fill="#C8A880" opacity="0.42"/>
+        </svg>
+      </div>
 
       <!-- Corner ornaments -->
       <div class="ic-corner ic-tl">
@@ -453,11 +269,21 @@
           وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِتَسْكُنُوا إِلَيْهَا 🤍
         </p>
 
-        <p class="invite-text">
-          اللمة تحلى بيكم 🤍، والفرحة تكبر بحضوركم ✨. بكل محبّة، نتشرّف بدعوتكم لمشاركتنا فرحة زفاف وليدنا وكنّتنا 💍،
-          لنفرحوا سوا ونقاسموا أجمل اللحظات في هذا اليوم المميّز 🎉. حضوركم يزيد فرحتنا بهجة ويخلّي الذكريات أحلى وأجمل
-          📸✨
-        </p>
+        <div class="invite-text">
+          <p class="invite-families-title">{{ t().familiesTitle }}</p>
+
+          <div class="invite-parents-row">
+            <span class="invite-parent-name">محمد العيادي</span>
+            <span class="invite-parent-sep">{{ t().parentSep }}</span>
+            <span class="invite-parent-name">السيدة فاطمة الأحمر</span>
+          </div>
+
+          <div class="invite-parents-row">
+            <span class="invite-parent-name">عبد الرؤوف القداح</span>
+            <span class="invite-parent-sep">{{ t().parentSep }}</span>
+            <span class="invite-parent-name">السيدة إيمان عبيد</span>
+          </div>
+        </div>
         <!-- Couple names -->
         <div class="invite-names-row">
           <span class="invite-groom">{{ groomName }}</span>
@@ -502,27 +328,11 @@
               </svg>
             </div>
             <div class="ie-body">
-              <div class="ie-title">ليلة الكشكوب</div>
-              <div class="ie-datetime">الأربعاء، 22 جويلية 2026 — الساعة الثامنة مساءً</div>
+              <div class="ie-title">{{ t().eventTitle }}</div>
+              <div class="ie-datetime">{{ t().eventDatetime }}</div>
             </div>
           </div>
         </div>
-
-        <!-- Divider -->
-        <div class="invite-divider">
-          <svg viewBox="0 0 460 16" xmlns="http://www.w3.org/2000/svg">
-            <line x1="0" y1="8" x2="185" y2="8" stroke="#C9A96E" stroke-width="0.7" opacity="0.35" />
-            <circle cx="197" cy="8" r="2" fill="#C9A96E" opacity="0.45" />
-            <g transform="translate(230,8)" opacity="0.55">
-              <polygon points="0,-6 1.5,-1.5 6,0 1.5,1.5 0,6 -1.5,1.5 -6,0 -1.5,-1.5" fill="#C9A96E" />
-              <polygon points="0,-6 1.5,-1.5 6,0 1.5,1.5 0,6 -1.5,1.5 -6,0 -1.5,-1.5" fill="#C9A96E"
-                transform="rotate(45)" opacity="0.5" />
-            </g>
-            <circle cx="263" cy="8" r="2" fill="#C9A96E" opacity="0.45" />
-            <line x1="275" y1="8" x2="460" y2="8" stroke="#C9A96E" stroke-width="0.7" opacity="0.35" />
-          </svg>
-        </div>
-
         <!-- Venue -->
         <div class="invite-venue">
           <div class="iv-name">{{ venue }}</div>
@@ -545,8 +355,8 @@
         </div>
 
         <!-- Closing -->
-        <p class="invite-closing">في انتظار شرف حضوركم</p>
-        <p class="invite-subclosing">ربّي يجيب الفرحة للجميع</p>
+        <p class="invite-closing">{{ t().closing }}</p>
+        <p class="invite-subclosing">{{ t().subClosing }}</p>
 
         <!-- Bottom decorative band -->
         <div class="invite-band">
@@ -570,39 +380,8 @@
   </section>
 
 
-  <!-- ─── FOOTER ─────────────────────────────────────────── -->
-  <footer class="footer" dir="rtl">
-    <div class="footer-pearl-row">
-      <div class="mini-pearl" style="--sz:8px"></div>
-      <div class="mini-pearl" style="--sz:14px"></div>
-      <div class="mini-pearl" style="--sz:20px"></div>
-      <div class="mini-pearl" style="--sz:28px"></div>
-      <div class="mini-pearl" style="--sz:20px"></div>
-      <div class="mini-pearl" style="--sz:14px"></div>
-      <div class="mini-pearl" style="--sz:8px"></div>
-    </div>
-
-
-    <p class="footer-names">بهاء عياري &amp; أيّة قدّاح</p>
-    <p class="footer-venue">القيروان، تونس</p>
-
-    <div class="footer-divider">
-      <svg viewBox="0 0 400 16" xmlns="http://www.w3.org/2000/svg">
-        <line x1="0" y1="8" x2="168" y2="8" stroke="#C9A96E" stroke-width="0.6" opacity="0.35" />
-        <circle cx="178" cy="8" r="2" fill="#C9A96E" opacity="0.5" />
-        <circle cx="190" cy="8" r="3.5" fill="#C9A96E" opacity="0.6" />
-        <circle cx="200" cy="8" r="5" fill="#C9A96E" opacity="0.7" />
-        <circle cx="210" cy="8" r="3.5" fill="#C9A96E" opacity="0.6" />
-        <circle cx="222" cy="8" r="2" fill="#C9A96E" opacity="0.5" />
-        <line x1="232" y1="8" x2="400" y2="8" stroke="#C9A96E" stroke-width="0.6" opacity="0.35" />
-      </svg>
-    </div>
-
-    <p class="footer-copy">بكل محبة وامتنان ✦ 23 جويلية 2026</p>
-  </footer>
-
   <!-- Audio -->
-  <audio #audioPlayer src="music.mp3" loop preload="none"></audio>
+  <audio #audioPlayer [src]="musicSrc" loop preload="none"></audio>
 
   <!-- Music toggle button -->
   <button class="music-btn" [class.music-playing]="musicPlaying()" (click)="toggleMusic()">
@@ -617,7 +396,7 @@
       <circle cx="18" cy="16" r="3" fill="currentColor" />
       }
     </svg>
-    <span class="music-btn-label">{{ musicPlaying() ? 'إيقاف' : 'موسيقى' }}</span>
+    <span class="music-btn-label">{{ musicPlaying() ? t().musicPause : t().musicPlay }}</span>
   </button>
 
 </div>
